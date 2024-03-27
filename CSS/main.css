@@ -1,0 +1,148 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+body {
+    display: flex;
+    background-color: #0d0615;
+}
+
+.container {
+    max-width: 1024px;
+    margin: 0 auto;
+}
+
+header {
+    margin-top: 64px;
+    margin-bottom: 16px;
+}
+
+header a {
+    color: #ff9efa;
+    text-decoration: none;
+    cursor: default;
+}
+
+header a h1, header h2 {
+    font-weight: bolder;
+    font-size: 48px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+header h2 {
+    font-size: 36px;
+    color: #ff9efa;
+}
+
+section {
+    display: flex;
+    color: #ff9efa;
+    font-size: 18px;
+    max-width: 700px;
+    margin-bottom: 16px;
+    text-align: justify;
+}
+
+.form-section {
+    justify-content: space-around;
+    text-align: left;
+}
+
+form {
+    max-width: 450px;
+}
+
+form li {
+    list-style: none;
+    margin-bottom: 8px;
+    align-items: center;
+}
+
+form li label {
+    font-size: 22px;
+    color: #ff9efa;
+}
+
+.label-nome-cpf, .input-nome-cpf {
+    display: flex;
+}
+
+#label-nome {
+    margin-right: 72px;
+}
+
+#nomeCompleto {
+    margin-right: 3%;
+}
+
+.form-campo input, .form-campo textarea {
+    background-color: #331842;
+    padding: 8px;
+    width: 100%;
+    font-size: 18px;
+    color: #ff9efa;
+    margin-bottom: 4px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+form li textarea {
+    resize: none;
+}
+
+form button {
+    background-color: #390b38;
+    font-size: 24px;
+    color: #ff9efa;
+    font-weight: bold;
+    font-style: italic;
+    padding: 8px;
+    width: 100%;
+    margin-bottom: 64px;
+    text-transform: uppercase;
+    transition: 1s;
+}
+
+form button:hover {
+    background-color: #6d2c6b;
+}
+
+.informacaoInvalida{
+    color: red;
+    text-transform: uppercase;
+    font-size: 16px;
+    font-weight: bold;
+    font-style: italic;
+    text-decoration: underline;
+}
+
+.input-container {
+    position: relative;
+}
+
+#validation-message {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    background-color: #ffcccc;
+    color: #cc0000;
+    padding: 5px;
+    border-radius: 3px;
+    font-size: 0.8em;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+.hidden {
+    display: none;
+}

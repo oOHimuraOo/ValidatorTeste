@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+    <link rel="stylesheet" href="./CSS/main.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto&display=swap">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="./HTML/Desafio.html">
+                <h1>Cadastre-se</h1>
+            </a> 
+        </header>
+        <form>
+            <ul>
+                <li>
+                    <div class="form-campo">
+                        <div class="label-nome-cpf">
+                            <label for="nomeCompleto" id="label-nome">Nome completo:</label>
+                            <label for="cpf" id="label-cpf">CPF:</label>
+                        </div>
+                        <div class="input-nome-cpf">
+                            <div class="input-nome-cpf input-container" id="div-nome">
+                                <input type="text" id="nomeCompleto" name="nomeCompleto">
+                            </div>
+                            <div class="input-nome-cpf input-container" id="div-cpf">
+                                <input type="text" id="cpf" name="cpf">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-campo input-container" id="div-email">
+                        <label for="email">E-mail:</label>
+                        <input type="email" id="email" name="email">
+                    </div>
+                </li>
+                <li>
+                    <div class="form-campo input-container" id="div-telefone">
+                        <label for="telefone">Telefone:</label>
+                        <input type="tel" id="telefone" name="telefone">
+                    </div>
+                </li>
+                <li>
+                    <div class="form-campo input-container" id="div-celular">
+                        <label for="celular">Celular:</label>
+                        <input type="tel" id="celular" name="celular">
+                    </div>
+                </li>
+                <li>
+                    <div class="form-campo input-container" id="div-cep">
+                        <label for="cep">CEP:</label>
+                        <input type="text" id="cep" name="cep">
+                    </div>
+                </li>
+                <li>
+                    <div class="form-campo input-container" id="div-endereco">
+                        <label for="endereco">Endereço:</label>
+                        <input type="text" id="endereco" name="endereco">
+                    </div>
+                </li>
+                <li>
+                    <div class="form-campo input-container" id="div-complemento">
+                        <label for="complemento">Complemento:</label>
+                        <textarea name="complemento" id="complemento" cols="30" rows="10"></textarea>
+                    </div>
+                </li>
+            </ul>
+            <button type="submit" id="btn-enviar">Enviar</button>
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="./JavaScript/jquery.mask.min.js"></script>
+    <script src="./JavaScript/jquery.validate.min.js"></script>
+    <script src="./JavaScript/messages_pt_BR.js"></script>
+    <script src="./JavaScript/main.js"></script>
+</body>
+</html>
