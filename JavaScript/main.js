@@ -5,7 +5,7 @@ var arrayDeCamposValidos = []
 var Regras = {}
 var index = 0
 var timeStamp
-
+var timeoutID
 
 //eventos
 $(document).ready(function() {
@@ -156,6 +156,9 @@ function reveladorDeMensagem(bool, objeto){
             var index = arrayDeCamposValidos.indexOf(objeto[0].id)
             arrayDeCamposValidos.splice(index,1)
         }
+        if (objeto.parent().find('#validation-message') != null){
+            revelarMensagem(objeto)
+        }
         return false
     }
     else{
@@ -163,8 +166,12 @@ function reveladorDeMensagem(bool, objeto){
         if (!arrayDeCamposValidos.includes(objeto[0].id)){
             arrayDeCamposValidos.push(objeto[0].id)
         }
+        if (objeto.parent().find('#validation-message') != null){
+            revelarMensagem(objeto)
+        }
         return true
     }
+    
 }
 
 function mensagemErro(objeto){
@@ -174,22 +181,55 @@ function mensagemErro(objeto){
     }
 
     var nodoPai = objeto.parent()
+    $(`#${objeto[0].id}`).css('color', 'red')
 
     if (document.querySelector(`#${nodoPai[0].id} #validation-message`) != null){
         nodoPai.find('#validation-message').text(definirMensagemUsada(objeto))
-        nodoPai.find('#validation-message').removeClass('hidden')
+        var classes = nodoPai.find('#validation-message').attr('class').split(' ')
+        if (!classes.includes('falha')){
+            nodoPai.find('#validation-message').addClass('falha').removeClass('sucesso')
+            
+        }
         
     }
     else{
-        $(`<div id="validation-message">${definirMensagemUsada(objeto)}</div>`).appendTo(nodoPai)
+        $(`<div id="validation-message" class="hidden falha">${definirMensagemUsada(objeto)}</div>`).appendTo(nodoPai)
     }
-    
 }
 
 function mensagemSucesso(objeto){
     var nodoPai = objeto.parent()
+    var mensagemElement = $(`#${nodoPai[0].id} #validation-message`)
     
-    $(`#${nodoPai[0].id} #validation-message`).addClass('hidden')
+    mensagemElement.text('Campo validado com sucesso.')
+    mensagemElement.removeClass('falha')
+    mensagemElement.addClass('sucesso')
+    $(`#${objeto[0].id}`).css('color', '#ff9efa')
+}
+
+function revelarMensagem(objeto){
+    var nodoPai = objeto.parent()
+    var mensagemElement = $(`#${nodoPai[0].id} #validation-message`)
+
+    mensagemElement.removeClass('hidden')
+
+    if (timeoutID) {
+        clearTimeout(timeoutID)
+    }
+
+    
+    timeoutID = setTimeout(function(){
+        esconderMensagemErro(objeto)
+        timeoutID = null
+    }, 2000)
+}
+
+
+function esconderMensagemErro(objeto){
+    var nodoPai = objeto.parent()
+    var mensagemElement = $(`#${nodoPai[0].id} #validation-message`)
+
+    mensagemElement.addClass('hidden')
 }
 
 function verificadorDeCamposPreenchidos(bool=false){
@@ -526,45 +566,3 @@ function validarComp(objeto){
         return false
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//nao gostei dessa validação vou criar a minha.
-    /*$('form').validate({
-        rules:{
-            nome:{
-                required: true
-            },
-            cpf:{
-                required: true
-            },
-            email:{
-                required:true,
-                email: true
-            },
-            telefone:{
-                required: true
-            },
-            cep:{
-                required: true
-            },
-            complemento:{
-                required: true
-            }
-        }
-    })*/
