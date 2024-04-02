@@ -3,9 +3,10 @@ var arrayDeTipos = ['nome','nomeCompleto','cpf', 'email', 'telefone', 'celular',
 var arrayDeCamposInvalidos = []
 var arrayDeCamposValidos = []
 var Regras = {}
+var timeoutID = {}
 var index = 0
 var timeStamp
-var timeoutID
+
 
 //eventos
 $(document).ready(function() {
@@ -49,7 +50,10 @@ $('#email').keyup(function(e) {
 
 $('#telefone').keyup(function(e) {
     var objeto = $('#telefone')
-
+    var apagando = e.originalEvent.code === 'Backspace' ? true : false
+    
+    console.log(apagando)
+    //telefoneUnificator(objeto, apagando)
     verificadorDeCamposPreenchidos(Validar(objeto, SolicitarTipo(objeto)))
 })
 
@@ -125,7 +129,7 @@ function Validar(objeto, tipo) {
             return reveladorDeMensagem(valido, objeto)
 
         case 'telefone':
-            var valido = validarTel(objeto,true)
+            var valido = validarTel(objeto,true) //validarTelUnific(objeto)
             return reveladorDeMensagem(valido, objeto)
 
         case 'celular':
@@ -201,7 +205,13 @@ function mensagemSucesso(objeto){
     var nodoPai = objeto.parent()
     var mensagemElement = $(`#${nodoPai[0].id} #validation-message`)
     
-    mensagemElement.text('Campo validado com sucesso.')
+    if (objeto[0].id == 'telefone'){
+        mensagemElement.text(definirMensagemUsada(objeto))
+    }
+    else {
+        mensagemElement.text('Campo validado com sucesso.')
+    }
+    
     mensagemElement.removeClass('falha')
     mensagemElement.addClass('sucesso')
     $(`#${objeto[0].id}`).css('color', '#ff9efa')
@@ -213,14 +223,14 @@ function revelarMensagem(objeto){
 
     mensagemElement.removeClass('hidden')
 
-    if (timeoutID) {
+    if (timeoutID[`TOID${objeto[0].id}`]) {
         clearTimeout(timeoutID)
     }
 
     
-    timeoutID = setTimeout(function(){
+    timeoutID[`TOID${objeto[0].id}`] = setTimeout(function(){
         esconderMensagemErro(objeto)
-        timeoutID = null
+        timeoutID[`TOID${objeto[0].id}`] = null
     }, 2000)
 }
 
@@ -265,7 +275,7 @@ function definirMensagemUsada(objeto){
     var tipo = objeto[0].id
     switch (tipo) {
         case 'nome':
-            var mensagem = ['mensagem 1', 'mensagem 2', 'mensagem 3', 'mensagem 4', 'mensagem 5']
+            var mensagem = ['Esse campo é obrigatorio', 'por favor preencha este campo', 'preencha este campo com como você gostaria de ser chamado', 'O campo nome precisa ser preenchido', 'Por favor preencha com pelo menos 1 nome.']
             
             if (timeStamp <= timerCompardo - 5){
                 index++
@@ -319,11 +329,23 @@ function definirMensagemUsada(objeto){
 
         case 'telefone':
             if (Regras['regrasTelefone'] === 'regra 0') {
-                return `Por favor digite TODOS os digitos do DDD e do TELEFONE FIXO`
+                return `Por favor digite TODOS os digitos do DDD e do TELEFONE`
             }
             else {
                 return 'mensagem generica 4'
             }
+            
+            /*if (Regras['regrasTelefone'] === 'regra 0') {
+                return `Telefone empresarial tipo Ramal Regional identificado com sucesso.`
+            } else if (Regras['regrasTelefone'] === 'regra 1') {
+                return 'Telefone fixo identificado com sucesso'
+            } else if (Regras['regrasTelefone'] === 'regra 2') {
+                return 'Celular identificado com sucesso'
+            } else if (Regras['regrasTelefone'] === 'regra 3' || Regras['regrasTelefone'] === 'regra 4' || Regras['regrasTelefone'] === 'regra 5' || Regras['regrasTelefone'] === 'regra 6' || Regras['regrasTelefone'] === 'regra 7') {
+                return 'numero identificado com sucesso'
+            } else {
+                return 'Por favor confira o numero informado.'
+            }*/
 
         case 'celular':
             if (Regras['regrasTelefone'] === 'regra 1') {
@@ -356,7 +378,7 @@ function definirMensagemUsada(objeto){
             }
 
         case 'complemento':
-            var mensagem = ['mensagem 1', 'mensagem 2', 'mensagem 3', 'mensagem 4', 'mensagem 5']
+            var mensagem = ['Esse campo é obrigatorio', 'por favor preencha este campo', 'preencha este campo com o complemento para o seu endereço. Como numero do apartamento, numero da casa ou ponto d referencia', 'O campo complemento precisa ser preenchido', 'Por favor preencha com pelo menos 1 complemento.']
             
             if (timeStamp <= timerCompardo - 5){
                 index++
@@ -468,6 +490,110 @@ function validarTel(objeto, bool=false) {
     }
 }
 
+function validarTelUnific(objeto){
+    var tamanho = objeto.val().replace(/\D/g, '').length
+
+    if (tamanho >= 3 && tamanho <= 5){
+        Regras['regrasTelefone'] = 'regra 0'
+        return true
+    } else if (tamanho === 8){
+        Regras['regrasTelefone'] = 'regra 1'
+        return true
+    } else if (tamanho === 9){
+        Regras['regrasTelefone'] = 'regra 2'
+        return true
+    } else if (tamanho === 10){
+        Regras['regrasTelefone'] = 'regra 3'
+        return true
+    } else if (tamanho === 11){
+        Regras['regrasTelefone'] = 'regra 4'
+        return true
+    } else if (tamanho === 12){
+        Regras['regrasTelefone'] = 'regra 5'
+        return true
+    } else if (tamanho === 13){
+        Regras['regrasTelefone'] = 'regra 6'
+        return true
+    } else if (tamanho === 14){
+        Regras['regrasTelefone'] = 'regra 7'
+        return true
+    } else {
+        Regras['regrasTelefone'] = 'regra 8'
+        return false
+    }
+}
+
+function telefoneUnificator(objeto, bool){
+    var valor = objeto.val()
+
+    valor = valor.replace(/\D/g, '')
+    
+    if (bool){
+        if (valor.length > 3){
+            telefoneUnificator(objeto, false)
+            return
+        }
+        else{
+            return
+        }
+    }
+    
+    if (valor.length < 8 ){
+        valor = valor.substring(0,3) + ' ' + valor.substring(3)
+    } else if (valor.length === 8){
+        valor = valor.substring(0,4) + '-' + valor.substring(4,8)
+    } else if (valor.length === 9){
+        valor = valor.substring(0,1) + ' ' + valor.substring(1,5) + '-' + valor.substring(5,9)
+    } else if (valor.length === 10){
+        valor = '(' + valor.substring(0,2) + ') ' + valor.substring(2,6) + '-' + valor.substring(6,10)
+    } else if (valor.length === 11){
+        if (valor[0] == 0){
+            if (valor[1] != 0){
+                if (valor[2] == 0) {
+                    if (valor[3] == 0){
+                        valor = valor.substring(0,4) + ' ' + valor.substring(4,7) + ' ' + valor.substring(7,11)
+                    }
+                    else {
+                        valor = '(' + valor.substring(0,3) + ') ' + valor.substring(3,7) + '-' + valor.substring(7,11)
+                    }
+                }
+            }
+        }
+        else {
+            if (valor[2] == 9){
+                valor = '(' + valor.substring(0,2) + ') ' + valor.substring(2,3) + ' ' + valor.substring(3,7) + '-' + valor.substring(7,11)
+            }
+            else {
+                valor = '(' + valor.substring(0,2) + ') ' + valor.substring(2,6) + '-' + valor.substring(6,10) + ' R.: ' + valor.substring(10,11)
+            }
+        }
+    } else if (valor.length === 12){
+        if (valor[0] == 0){
+            if (valor[3] == 9){
+                valor = '(' + valor.substring(0,3) + ') ' + valor.substring(3,4) + ' ' + valor.substring(4,8) + '-' + valor.substring(8,12)
+            }
+            else {
+                valor = '(' + valor.substring(0,3) + ') ' + valor.substring(3,7) + '-' + valor.substring(7,11) + ' R.: ' + valor.substring(11,12)
+            }
+        }
+        else {
+            valor = '(' + valor.substring(0,2) + ') ' + valor.substring(2,6) + '-' + valor.substring(6,10) + ' R.: ' + valor.substring(10,12)
+        }
+    } else if (valor.length === 13){
+        if (valor[0] == 0){
+            valor = '(' + valor.substring(0,3) + ') ' + valor.substring(3,7) + '-' + valor.substring(7,11) + ' R.: ' + valor.substring(11,13)
+        }
+        else {
+            valor = '(' + valor.substring(0,2) + ') ' + valor.substring(2,6) + '-' + valor.substring(6,10) + ' R.: ' + valor.substring(10,13)
+        }
+    } else if (valor.length >= 14){
+        valor = '(' + valor.substring(0,3) + ') ' + valor.substring(3,7) + '-' + valor.substring(7,11) + ' R.: ' + valor.substring(11,14)
+    }
+
+    objeto.val(valor)
+}
+
+
 //funções exclusivas para o cep
 function validarCEP(objeto) {
     var tamanho = objeto.val().length
@@ -559,10 +685,53 @@ function validarEnd(objeto){
 
 //função exclusiva para o complemento
 function validarComp(objeto){
-    if (objeto.val() != ''){
+    var tamanho = objeto.val().length
+    if (tamanho > 10){
         return true
     }
     else{
         return false
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//nao gostei dessa validação vou criar a minha.
+    /*$('form').validate({
+        rules:{
+            nome:{
+                required: true
+            },
+            cpf:{
+                required: true
+            },
+            email:{
+                required:true,
+                email: true
+            },
+            telefone:{
+                required: true
+            },
+            cep:{
+                required: true
+            },
+            complemento:{
+                required: true
+            }
+        }
+    })*/
