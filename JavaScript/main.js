@@ -27,6 +27,9 @@ $(document).ready(function() {
         placeholder: '01 234-567'
     })
     
+    $('#email').attr('placeholder','usuario@dominio.terminação')
+    $('#nomeCompleto').attr('placeholder', 'Nome Sobrenome')
+    $('#complemento').attr('placeholder', 'Digite aqui um complemento para seu endereço.')
     ativarEndereco(false)
 })
 

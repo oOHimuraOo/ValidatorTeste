@@ -16,6 +16,9 @@ $(document).ready(function() {
     })
 
     $('#telefone').attr('placeholder', 'Digite aqui um numero de 3 a 13 digitos.')
+    $('#email').attr('placeholder','usuario@dominio.terminação')
+    $('#nomeCompleto').attr('placeholder', 'Nome Sobrenome')
+    $('#complemento').attr('placeholder', 'Digite aqui um complemento para seu endereço.')
 
     $('#cep').mask('00.000-000',{
         placeholder: '01 234-567'
