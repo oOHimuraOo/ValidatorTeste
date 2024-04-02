@@ -323,7 +323,16 @@ function definirMensagemUsada(objeto){
                 return 'por favor insira um dominio valido'
             }
             else if (Regras['regrasEmail'] === 'regra 3'){
-                return 'por favor insira um usuario valido.'
+                return 'dominios não podem ser iniciados por NUMEROS'
+            }
+            else if (Regras['regrasEmail'] === 'regra 4'){
+                return 'Email precisa conter um "@"'
+            }
+            else if (Regras['regrasEmail'] === 'regra 5'){
+                return 'O usuario não pode ser iniciado por NUMEROS ou ".".'
+            }
+            else if (Regras['regrasEmail'] === 'regra 6'){
+                return 'o email não pode conter ESPAÇOS'
             }
             else 'mensagem generica 3'
 
@@ -436,29 +445,50 @@ function validarCPF(objeto) {
 function validarEmail(objeto) {
     var valor = objeto.val()
     var indiceArroba = valor.indexOf('@')
-
-    if (indiceArroba !== -1 && indiceArroba !== 0) {
-        var indicePonto = valor.indexOf('.', indiceArroba)
-        if (indicePonto !== -1 && indicePonto > indiceArroba + 1) {
-            if (valor[indicePonto + 1] !== undefined) {
-                if (valor[indicePonto + 1] !== '') {
-                    Regras['regrasEmail'] = ''
-                    return true
-                }
-                else {
-                    Regras['regrasEmail'] = 'regra 0'
+    
+    if (!valor.includes(' ')){
+        if (isNaN(parseInt(valor[0])) && valor[0] != '.'){
+            if (indiceArroba !== -1 && indiceArroba !== 0 && indiceArroba >= 1) {
+                if (isNaN(parseInt(valor[indiceArroba + 1]))){
+                    var indicePonto = valor.indexOf('.', indiceArroba)
+                    if (indicePonto !== -1 && indicePonto > indiceArroba + 1) {
+                        if (valor[indicePonto + 1] !== undefined) {
+                            if (valor[indicePonto + 1] !== '') {
+                                Regras['regrasEmail'] = ''
+                                return true
+                            }
+                            else {
+                                Regras['regrasEmail'] = 'regra 0'
+                                return false
+                            }
+                        } 
+                        else {
+                            Regras['regrasEmail'] = 'regra 1'
+                            return false
+                        }
+                    } 
+                    else {
+                        Regras['regrasEmail'] = 'regra 2'
+                        return false
+                    }
+                } 
+                else{
+                    Regras['regrasEmail'] = 'regra 3'
                     return false
                 }
-            } else {
-                Regras['regrasEmail'] = 'regra 1'
+            } 
+            else {
+                Regras['regrasEmail'] = 'regra 4'
                 return false
             }
-        } else {
-            Regras['regrasEmail'] = 'regra 2'
+        }
+        else {
+            Regras['regrasEmail'] = 'regra 5'
             return false
         }
-    } else {
-        Regras['regrasEmail'] = 'regra 3'
+    }
+    else {
+        Regras['regrasEmail'] = 'regra 6'
         return false
     }
 }
